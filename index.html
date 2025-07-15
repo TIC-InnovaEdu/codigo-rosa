@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathSpin - Juego de Matemáticas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Página Principal -->
+    <div id="main-page" class="page active">
+        <div class="container">
+            <h1 class="game-title">MathSpin</h1>
+            <p class="game-subtitle">Juego de Matemáticas para Estudiantes de Décimo Año</p>
+            <div class="button-container">
+                <button id="login-btn" class="main-btn">Iniciar Sesión</button>
+                <button id="register-btn" class="main-btn">Registrarse</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Inicio de Sesión -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Iniciar Sesión</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Nombre de Usuario:</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña:</label>
+                    <div class="password-container">
+                        <input type="password" id="login-password" required>
+                        <span class="eye-icon" id="toggle-login-password">👁️</span>
+                    </div>
+                </div>
+                <div id="error-message" class="error-message"></div>
+                <div id="difficulty-container" class="form-group" style="display: none;">
+                    <label for="difficulty-select">Dificultad:</label>
+                    <select id="difficulty-select">
+                        <option value="facil">Fácil</option>
+                        <option value="intermedio">Intermedio</option>
+                        <option value="dificil">Difícil</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Página de Registro -->
+    <div id="register-page" class="page">
+        <div class="container">
+            <h2>Registro de Usuario</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="reg-name">Nombre:</label>
+                    <input type="text" id="reg-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-course">Curso:</label>
+                    <input type="text" id="reg-course" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-parallel">Paralelo:</label>
+                    <input type="text" id="reg-parallel" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-username">Nombre de Usuario:</label>
+                    <input type="text" id="reg-username" required>
+                    <small>Mínimo 8 caracteres, debe incluir números</small>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Contraseña:</label>
+                    <div class="password-container">
+                        <input type="password" id="reg-password" required>
+                        <span class="eye-icon" id="toggle-reg-password">👁️</span>
+                    </div>
+                    <small>Mínimo 8 caracteres, debe incluir números y puede incluir caracteres especiales</small>
+                </div>
+                <div id="register-error" class="error-message"></div>
+                <button type="submit" class="submit-btn">Registrar</button>
+                <button type="button" id="back-to-main" class="back-btn">Volver</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Página del Juego -->
+    <div id="game-page" class="page">
+        <div class="container">
+            <h2>¡Gira la Ruleta!</h2>
+            <div class="wheel-container">
+                <div id="wheel" class="wheel">
+                    <div class="wheel-section" data-category="algebra" style="--rotation: 0deg; --color: #e4aaa3;">
+                        <span>Álgebra</span>
+                    </div>
+                    <div class="wheel-section" data-category="trigonometria" style="--rotation: 60deg; --color: #d5abe6;">
+                        <span>Trigonometría</span>
+                    </div>
+                    <div class="wheel-section" data-category="geometria" style="--rotation: 120deg; --color: #a2ebdc;">
+                        <span>Geometría</span>
+                    </div>
+                    <div class="wheel-section" data-category="funciones" style="--rotation: 180deg; --color: #f0e5bb;">
+                        <span>Funciones</span>
+                    </div>
+                    <div class="wheel-section" data-category="numeros-racionales" style="--rotation: 240deg; --color: #abeec7;">
+                        <span>Números<br>Racionales</span>
+                    </div>
+                    <div class="wheel-section" data-category="estadisticas" style="--rotation: 300deg; --color: #a4d5f5;">
+                        <span>Estadísticas</span>
+                    </div>
+                    <div class="wheel-center-icon">
+                        <img src="Logo.png" alt="MathSpin Icon" />
+                    </div>
+                </div>
+            </div>
+            <button id="spin-btn" class="spin-btn">Girar Ruleta</button>
+        </div>
+    </div>
+
+    <!-- Página de Preguntas -->
+    <div id="question-page" class="page">
+        <div class="container">
+            <div class="question-header">
+                <h3 id="category-title"></h3>
+                <div class="timer-container">
+                    <span>Tiempo: </span>
+                    <span id="timer">0</span>
+                    <span> segundos</span>
+                </div>
+                <div class="progress">
+                    <span id="question-counter">1/5</span>
+                </div>
+            </div>
+            <div class="question-container">
+                <h4 id="question-text"></h4>
+                <div class="options-container">
+                    <button class="option-btn" data-option="a" id="option-a"></button>
+                    <button class="option-btn" data-option="b" id="option-b"></button>
+                    <button class="option-btn" data-option="c" id="option-c"></button>
+                    <button class="option-btn" data-option="d" id="option-d"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página de Resultados -->
+    <div id="results-page" class="page">
+        <div class="container">
+            <h2>¡Juego Terminado!</h2>
+            <div class="results-container">
+                <h3 id="final-score"></h3>
+                <div id="results-details"></div>
+                <button id="play-again-btn" class="main-btn">Jugar de Nuevo</button>
+                <button id="logout-btn" class="back-btn">Cerrar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
