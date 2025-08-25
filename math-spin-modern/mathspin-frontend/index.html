@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathSpin - La Ruleta del Saber | UPS TIC-InnovaEdu</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Pantalla Principal -->
+    <div id="mainScreen" class="screen active">
+        <div class="main-container">
+            <div class="hero-section">
+                <div class="university-header">
+                    <div class="university-logo">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="university-info">
+                        <h3>Universidad Politécnica Salesiana</h3>
+                        <p>Proyecto TIC-InnovaEdu</p>
+                    </div>
+                </div>
+                
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h1 class="game-title">
+                        <span class="math">Math</span><span class="spin">Spin</span>
+                    </h1>
+                    <p class="game-tagline">La Ruleta del Saber</p>
+                </div>
+                
+                <p class="game-subtitle">
+                    <i class="fas fa-graduation-cap"></i>
+                    Juego Educativo de Matemáticas - Décimo Año EGB
+                </p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-brain"></i>
+                        <span>6 Categorías</span>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-trophy"></i>
+                        <span>3 Niveles</span>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-clock"></i>
+                        <span>Tiempo Real</span>
+                    </div>
+                </div>
+                
+                <div class="button-container">
+                    <button id="loginBtn" class="main-btn primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Iniciar Sesión
+                    </button>
+                    <button id="registerBtn" class="main-btn secondary">
+                        <i class="fas fa-user-plus"></i>
+                        Registrarse
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Inicio de Sesión -->
+    <div id="loginModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</h2>
+                <span class="close"><i class="fas fa-times"></i></span>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">
+                        <i class="fas fa-user"></i>
+                        Nombre de Usuario
+                    </label>
+                    <input type="text" id="loginUsername" name="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">
+                        <i class="fas fa-lock"></i>
+                        Contraseña
+                    </label>
+                    <div class="password-container">
+                        <input type="password" id="loginPassword" name="loginPassword" required>
+                        <span class="eye-icon" id="toggleLoginPassword">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+                <div id="errorMessage" class="error-message"></div>
+                <div id="difficultyContainer" class="form-group difficulty-selector" style="display: none;">
+                    <label for="difficulty">
+                        <i class="fas fa-chart-line"></i>
+                        Selecciona tu Nivel
+                    </label>
+                    <div class="difficulty-options">
+                        <input type="radio" id="facil" name="difficulty" value="facil" checked>
+                        <label for="facil" class="difficulty-card easy">
+                            <i class="fas fa-seedling"></i>
+                            <span>Básico</span>
+                            <small>10 segundos</small>
+                        </label>
+                        
+                        <input type="radio" id="intermedio" name="difficulty" value="intermedio">
+                        <label for="intermedio" class="difficulty-card medium">
+                            <i class="fas fa-fire"></i>
+                            <span>Medio</span>
+                            <small>20 segundos</small>
+                        </label>
+                        
+                        <input type="radio" id="dificil" name="difficulty" value="dificil">
+                        <label for="dificil" class="difficulty-card hard">
+                            <i class="fas fa-bolt"></i>
+                            <span>Avanzado</span>
+                            <small>30 segundos</small>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" id="loginSubmitBtn" class="submit-btn">
+                    <i class="fas fa-play"></i>
+                    Iniciar Sesión
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pantalla de Registro -->
+    <div id="registerScreen" class="screen">
+        <div class="register-container">
+            <div class="register-card">
+                <div class="register-header">
+                    <h2><i class="fas fa-user-plus"></i> Registro de Usuario</h2>
+                    <p>Únete a MathSpin - La Ruleta del Saber</p>
+                </div>
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombre">
+                                <i class="fas fa-user"></i>
+                                Nombre
+                            </label>
+                            <input type="text" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="apellido">
+                                <i class="fas fa-user"></i>
+                                Apellido
+                            </label>
+                            <input type="text" id="apellido" name="apellido" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tipoUsuario">
+                            <i class="fas fa-id-badge"></i>
+                            Tipo de Usuario
+                        </label>
+                        <select id="tipoUsuario" name="tipoUsuario" required onchange="toggleStudentFields()">
+                            <option value="">Seleccionar...</option>
+                            <option value="estudiante">Estudiante</option>
+                            <option value="docente">Docente</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Campos específicos para estudiantes -->
+                    <div id="studentFields" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="paralelo">
+                                    <i class="fas fa-users"></i>
+                                    Paralelo
+                                </label>
+                                <select id="paralelo" name="paralelo">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="F">F</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="codigoCurso">
+                                    <i class="fas fa-key"></i>
+                                    Código del Curso (Opcional)
+                                </label>
+                                <input type="text" id="codigoCurso" name="codigoCurso" placeholder="Código proporcionado por tu docente">
+                                <small><i class="fas fa-info-circle"></i> Déjalo vacío si no tienes código</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="username">
+                                <i class="fas fa-at"></i>
+                                Nombre de Usuario
+                            </label>
+                            <input type="text" id="username" name="username" required>
+                            <small><i class="fas fa-info-circle"></i> Mínimo 8 caracteres con números</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">
+                                <i class="fas fa-lock"></i>
+                                Contraseña
+                            </label>
+                            <div class="password-container">
+                                <input type="password" id="password" name="password" required>
+                                <span class="eye-icon" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                            <small><i class="fas fa-shield-alt"></i> Mínimo 8 caracteres con números y símbolos</small>
+                        </div>
+                    </div>
+                    
+                    <div id="registerError" class="error-message"></div>
+                    <div class="button-group">
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-check"></i>
+                            Crear Cuenta
+                        </button>
+                        <button type="button" id="backToMain" class="back-btn">
+                            <i class="fas fa-arrow-left"></i>
+                            Volver
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla del Juego (Estudiantes) -->
+    <div id="gameScreen" class="screen">
+        <div class="game-container">
+            <div class="game-header">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="currentUserName">Usuario</h3>
+                        <p id="currentUserCourse">10mo EGB - Paralelo A</p>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Cerrar Sesión
+                </button>
+            </div>
+            
+            <div class="game-content">
+                <h2><i class="fas fa-dice"></i> ¡Gira la Ruleta Matemática!</h2>
+                <p>Descubre qué categoría te tocará resolver</p>
+                
+                <div class="roulette-section">
+                    <div class="roulette-container">
+                        <div id="wheel-container">
+                            <div id="wheel">
+                                <div class="sector algebra" data-category="algebra">
+                                    <div class="sector-content">
+                                        <i class="fas fa-square-root-alt"></i>
+                                        <span>Álgebra</span>
+                                    </div>
+                                </div>
+                                <div class="sector trigonometry" data-category="trigonometria">
+                                    <div class="sector-content">
+                                        <i class="fas fa-wave-square"></i>
+                                        <span>Trigonometría</span>
+                                    </div>
+                                </div>
+                                <div class="sector geometry" data-category="geometria">
+                                    <div class="sector-content">
+                                        <i class="fas fa-shapes"></i>
+                                        <span>Geometría</span>
+                                    </div>
+                                </div>
+                                <div class="sector statistics" data-category="estadisticas">
+                                    <div class="sector-content">
+                                        <i class="fas fa-chart-bar"></i>
+                                        <span>Estadísticas</span>
+                                    </div>
+                                </div>
+                                <div class="sector numbers" data-category="numeros">
+                                    <div class="sector-content">
+                                        <i class="fas fa-hashtag"></i>
+                                        <span>Números</span>
+                                    </div>
+                                </div>
+                                <div class="sector functions" data-category="funciones">
+                                    <div class="sector-content">
+                                        <i class="fas fa-project-diagram"></i>
+                                        <span>Funciones</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="center">
+                                <div class="center-circle">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="spinBtn" class="spin-btn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Girar Ruleta</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Docente -->
+    <div id="teacherDashboard" class="screen">
+        <div class="dashboard-container">
+            <!-- Header mejorado -->
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar teacher">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="teacherName">Docente</h3>
+                        <p>Panel de Control</p>
+                    </div>
+                </div>
+                
+                <!-- ✅ NUEVO: Selector de curso -->
+                <div class="course-selector">
+                    <label for="courseSelect">
+                        <i class="fas fa-school"></i>
+                        Curso Activo:
+                    </label>
+                    <select id="courseSelect" class="course-select">
+                        <option value="">Seleccionar curso...</option>
+                    </select>
+                    <button id="createCourseBtn" class="create-course-btn">
+                        <i class="fas fa-plus"></i>
+                        Crear Curso
+                    </button>
+                </div>
+                
+                <button id="teacherLogoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Cerrar Sesión
+                </button>
+            </div>
+            
+            <div class="dashboard-nav">
+                <button class="nav-btn active" data-section="analytics">
+                    <i class="fas fa-chart-line"></i>
+                    Analytics
+                </button>
+                <button class="nav-btn" data-section="students">
+                    <i class="fas fa-users"></i>
+                    Estudiantes
+                </button>
+                <button class="nav-btn" data-section="questions">
+                    <i class="fas fa-question-circle"></i>
+                    Gestión de Preguntas
+                </button>
+                <button class="nav-btn" data-section="courses">
+                    <i class="fas fa-school"></i>
+                    Mis Cursos
+                </button>
+            </div>
+            
+            <!-- ✅ SECCIÓN ANALYTICS MEJORADA -->
+            <div id="analyticsSection" class="dashboard-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Analytics y Estadísticas</h2>
+                    <div class="period-selector">
+                        <select id="periodSelect">
+                            <option value="7">Última semana</option>
+                            <option value="30" selected>Último mes</option>
+                            <option value="90">Últimos 3 meses</option>
+                            <option value="365">Todo el año</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- KPIs mejorados -->
+                <div class="analytics-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon students">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalStudents">0</h3>
+                            <p>Estudiantes Activos</p>
+                            <small class="stat-change" id="studentsChange">+0 esta semana</small>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon sessions">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalSessions">0</h3>
+                            <p>Sesiones de Juego</p>
+                            <small class="stat-change" id="sessionsChange">+0 esta semana</small>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon average">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="averageScore">0%</h3>
+                            <p>Promedio General</p>
+                            <small class="stat-change" id="averageChange">+0% vs anterior</small>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon time">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="averageTime">0 min</h3>
+                            <p>Tiempo Promedio</p>
+                            <small class="stat-change" id="timeChange">+0 min vs anterior</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ✅ NUEVO: Gráficos -->
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-bar"></i> Rendimiento por Categoría</h3>
+                        <div class="category-chart" id="categoryChart">
+                            <!-- Gráfico de barras por categoría -->
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3><i class="fas fa-trophy"></i> Top 5 Estudiantes</h3>
+                        <div class="top-students" id="topStudents">
+                            <!-- Lista de mejores estudiantes -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sesiones recientes mejoradas -->
+                <div class="recent-sessions">
+                    <h3><i class="fas fa-history"></i> Sesiones Recientes</h3>
+                    <div class="sessions-table-container">
+                        <table class="sessions-table" id="sessionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Categoría</th>
+                                    <th>Dificultad</th>
+                                    <th>Puntuación</th>
+                                    <th>Tiempo</th>
+                                    <th>Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sessionsTableBody">
+                                <tr class="no-data">
+                                    <td colspan="6">
+                                        <div class="no-data-message">
+                                            <i class="fas fa-info-circle"></i>
+                                            <p>Selecciona un curso para ver las sesiones</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ✅ SECCIÓN ESTUDIANTES MEJORADA -->
+            <div id="studentsSection" class="dashboard-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Mis Estudiantes</h2>
+                    <div class="students-actions">
+                        <button id="addStudentBtn" class="add-btn">
+                            <i class="fas fa-user-plus"></i>
+                            Invitar Estudiante
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="students-container">
+                    <div class="students-grid" id="studentsGrid">
+                        <div class="no-data-message">
+                            <i class="fas fa-users"></i>
+                            <h3>No hay estudiantes</h3>
+                            <p>Selecciona un curso para ver los estudiantes o comparte el código del curso</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ✅ SECCIÓN PREGUNTAS MEJORADA -->
+            <div id="questionsSection" class="dashboard-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-question-circle"></i> Gestión de Preguntas</h2>
+                    <div class="questions-actions">
+                        <button id="addQuestionBtn" class="add-btn">
+                            <i class="fas fa-plus"></i>
+                            Agregar Pregunta
+                        </button>
+                        <button id="importQuestionsBtn" class="secondary-btn">
+                            <i class="fas fa-upload"></i>
+                            Importar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="questions-filters">
+                    <select id="categoryFilter">
+                        <option value="">Todas las categorías</option>
+                        <option value="algebra">Álgebra</option>
+                        <option value="trigonometria">Trigonometría</option>
+                        <option value="geometria">Geometría</option>
+                        <option value="estadisticas">Estadísticas</option>
+                        <option value="numeros">Números</option>
+                        <option value="funciones">Funciones</option>
+                    </select>
+                    <select id="difficultyFilter">
+                        <option value="">Todas las dificultades</option>
+                        <option value="facil">Básico</option>
+                        <option value="intermedio">Medio</option>
+                        <option value="dificil">Avanzado</option>
+                    </select>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="questionSearch" placeholder="Buscar preguntas...">
+                    </div>
+                </div>
+                
+                <div class="questions-container" id="questionsContainer">
+                    <div class="no-data-message">
+                        <i class="fas fa-question-circle"></i>
+                        <h3>No hay preguntas</h3>
+                        <p>Comienza agregando preguntas para tus estudiantes</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ✅ SECCIÓN CURSOS NUEVA -->
+            <div id="coursesSection" class="dashboard-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-school"></i> Mis Cursos</h2>
+                    <button id="addCourseBtn" class="add-btn">
+                        <i class="fas fa-plus"></i>
+                        Crear Curso
+                    </button>
+                </div>
+                
+                <div class="courses-container" id="coursesContainer">
+                    <div class="no-data-message">
+                        <i class="fas fa-school"></i>
+                        <h3>No hay cursos</h3>
+                        <p>Crea tu primer curso para comenzar</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar/Editar Pregunta -->
+    <div id="questionModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2><i class="fas fa-question-circle"></i> <span id="questionModalTitle">Agregar Pregunta</span></h2>
+                <span class="close" id="closeQuestionModal"><i class="fas fa-times"></i></span>
+            </div>
+            <form id="questionForm">
+                <div class="form-group">
+                    <label for="questionTitle">
+                        <i class="fas fa-heading"></i>
+                        Título de la Pregunta
+                    </label>
+                    <textarea id="questionTitle" name="questionTitle" rows="3" required placeholder="Escribe aquí la pregunta..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="questionCategory">
+                            <i class="fas fa-tag"></i>
+                            Categoría
+                        </label>
+                        <select id="questionCategory" name="questionCategory" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="algebra">Álgebra</option>
+                            <option value="trigonometria">Trigonometría</option>
+                            <option value="geometria">Geometría</option>
+                            <option value="estadisticas">Estadísticas</option>
+                            <option value="numeros">Números</option>
+                            <option value="funciones">Funciones</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="questionDifficulty">
+                            <i class="fas fa-chart-line"></i>
+                            Nivel de Dificultad
+                        </label>
+                        <select id="questionDifficulty" name="questionDifficulty" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="facil">Básico</option>
+                            <option value="intermedio">Medio</option>
+                            <option value="dificil">Avanzado</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="options-container">
+                    <h4><i class="fas fa-list"></i> Opciones de Respuesta</h4>
+                    <div class="form-group">
+                        <label for="optionA">Opción A</label>
+                        <input type="text" id="optionA" name="optionA" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="optionB">Opción B</label>
+                        <input type="text" id="optionB" name="optionB" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="optionC">Opción C</label>
+                        <input type="text" id="optionC" name="optionC" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="optionD">Opción D</label>
+                        <input type="text" id="optionD" name="optionD" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="correctAnswer">
+                        <i class="fas fa-check-circle"></i>
+                        Respuesta Correcta
+                    </label>
+                    <select id="correctAnswer" name="correctAnswer" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="a">Opción A</option>
+                        <option value="b">Opción B</option>
+                        <option value="c">Opción C</option>
+                        <option value="d">Opción D</option>
+                    </select>
+                </div>
+                
+                <!-- ✅ NUEVO: Opciones avanzadas -->
+                <div class="advanced-options">
+                    <h4><i class="fas fa-cogs"></i> Opciones Avanzadas</h4>
+                    <div class="form-group">
+                        <label for="questionImage">
+                            <i class="fas fa-image"></i>
+                            Imagen (URL)
+                        </label>
+                        <input type="url" id="questionImage" name="questionImage" placeholder="https://ejemplo.com/imagen.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="hasLatex" name="hasLatex">
+                            <span class="checkmark"></span>
+                            Esta pregunta contiene fórmulas matemáticas (LaTeX)
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i>
+                        <span id="questionSubmitText">Guardar Pregunta</span>
+                    </button>
+                    <button type="button" class="back-btn" id="cancelQuestionBtn">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Crear/Editar Curso -->
+    <div id="courseModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-school"></i> <span id="courseModalTitle">Crear Curso</span></h2>
+                <span class="close" id="closeCourseModal"><i class="fas fa-times"></i></span>
+            </div>
+            <form id="courseForm">
+                <div class="form-group">
+                    <label for="courseName">
+                        <i class="fas fa-graduation-cap"></i>
+                        Nombre del Curso
+                    </label>
+                    <input type="text" id="courseName" name="courseName" value="10mo EGB" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="courseParalelo">
+                        <i class="fas fa-users"></i>
+                        Paralelo
+                    </label>
+                    <input type="text" id="courseParalelo" name="courseParalelo" required placeholder="Ej: A, B, C, D..." maxlength="1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="courseCodigo">
+                        <i class="fas fa-key"></i>
+                        Código del Curso
+                    </label>
+                    <div class="code-input-container">
+                        <input type="text" id="courseCodigo" name="courseCodigo" placeholder="Se generará automáticamente" maxlength="10">
+                        <button type="button" id="generateCodeBtn" class="generate-btn">
+                            <i class="fas fa-sync-alt"></i>
+                            Generar
+                        </button>
+                    </div>
+                    <small><i class="fas fa-info-circle"></i> Los estudiantes usarán este código para unirse</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="courseDescription">
+                        <i class="fas fa-info-circle"></i>
+                        Descripción (Opcional)
+                    </label>
+                    <textarea id="courseDescription" name="courseDescription" rows="3" placeholder="Descripción del curso..."></textarea>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i>
+                        <span id="courseSubmitText">Crear Curso</span>
+                    </button>
+                    <button type="button" class="back-btn" id="cancelCourseBtn">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pantalla de Preguntas -->
+    <div id="questionScreen" class="screen">
+        <div class="question-container">
+            <div class="question-header">
+                <div class="category-badge">
+                    <i class="category-icon"></i>
+                    <span id="categoryTitle"></span>
+                </div>
+                <div class="timer-container">
+                    <div class="timer-circle">
+                        <svg class="timer-svg" viewBox="0 0 100 100">
+                            <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="timer-progress" cx="50" cy="50" r="45"></circle>
+                        </svg>
+                        <div class="timer-text">
+                            <span id="timer">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <span class="progress-text" id="questionProgress">1/5</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-content">
+                <div class="question-card">
+                    <h3 id="questionText"></h3>
+                </div>
+                
+                <div class="options-grid">
+                    <button class="option-btn" data-option="a" id="optionA">
+                        <span class="option-letter" >A</span>
+                        <span class="option-text" id="opcion1"></span>
+                    </button>
+                    <button class="option-btn" data-option="b" id="optionB">
+                        <span class="option-letter">B</span>
+                        <span class="option-text" id="opcion2"> </span>
+                    </button>
+                    <button class="option-btn" data-option="c" id="optionC">
+                        <span class="option-letter">C</span>
+                        <span class="option-text" id="opcion3"></span>
+                    </button>
+                    <button class="option-btn" data-option="d" id="optionD">
+                        <span class="option-letter">D</span>
+                        <span class="option-text" id="opcion4"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Resultados -->
+    <div id="resultsScreen" class="screen">
+        <div class="results-container">
+            <div class="results-card">
+                <div class="results-header">
+                    <div class="trophy-animation">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h2>¡Resultados!</h2>
+                </div>
+                
+                <div class="score-section">
+                    <div class="score-circle">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="score-bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="score-progress" cx="50" cy="50" r="45"></circle>
+                        </svg>
+                        <div class="score-content">
+                            <div class="score-number" id="finalScore">0/5</div>
+                            <div class="score-percentage" id="percentage">0%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-details">
+                    <div class="detail-item">
+                        <i class="fas fa-tag"></i>
+                        <span>Categoría:</span>
+                        <strong id="resultCategory"></strong>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dificultad:</span>
+                        <strong id="resultDifficulty"></strong>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Duración:</span>
+                        <strong id="sessionDuration">0 min</strong>
+                    </div>
+                </div>
+                
+                <div class="results-actions">
+                    <button id="playAgainBtn" class="action-btn primary">
+                        <i class="fas fa-redo"></i>
+                        Jugar de Nuevo
+                    </button>
+                    <button id="backToGameBtn" class="action-btn secondary">
+                        <i class="fas fa-home"></i>
+                        Menú Principal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Conectando con la base de datos...</p>
+        </div>
+    </div>
+
+    <!-- ✅ MODAL INVITAR ESTUDIANTE -->
+    <div id="inviteStudentModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-plus"></i> Invitar Estudiante</h2>
+                <span class="close" id="closeInviteModal"><i class="fas fa-times"></i></span>
+            </div>
+            <div class="invite-content">
+                <div class="course-code-display">
+                    <h3>Código del Curso</h3>
+                    <div class="code-display">
+                        <span id="displayCourseCode">MAT10A2501</span>
+                        <button id="copyCourseCode" class="copy-btn">
+                            <i class="fas fa-copy"></i>
+                            Copiar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="invite-instructions">
+                    <h4><i class="fas fa-info-circle"></i> Instrucciones para el estudiante:</h4>
+                    <ol>
+                        <li>Registrarse en MathSpin como estudiante</li>
+                        <li>Ingresar el código del curso: <strong id="instructionCode">MAT10A2501</strong></li>
+                        <li>¡Listo para jugar!</li>
+                    </ol>
+                </div>
+                
+                <div class="qr-code-section">
+                    <h4><i class="fas fa-qrcode"></i> Código QR</h4>
+                    <div id="qrCodeContainer" class="qr-container">
+                        <!-- QR Code se generará aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Botoncito flotante modo Físico/Web -->
+    <style>
+        #ms-mode {
+            position: fixed; top: 12px; right: 12px; z-index: 9999;
+            font-family: system-ui, sans-serif;
+            background: #111; color: #fff; border-radius: 999px;
+            padding: 6px 10px; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.2);
+        }
+        #ms-mode small { opacity:.75 }
+        #ms-switch { cursor: pointer; }
+        #ms-led { width: 8px; height: 8px; border-radius: 50%; background: #f33; display:inline-block }
+        #ms-led.ok { background: #2ecc71 }
+    </style>
+
+    <div id="ms-mode">
+        <span id="ms-led" title="Arduino"></span>
+        <small id="ms-status">Arduino: desconectado</small>
+        <label>
+            <input id="ms-switch" type="checkbox"> Físico
+        </label>
+    </div>
+
+    <script>
+    (async function () {
+        const led = document.getElementById('ms-led');
+        const status = document.getElementById('ms-status');
+        const sw = document.getElementById('ms-switch');
+
+        async function connect() {
+            try {
+                const r = await fetch('/api/device/connect', { method: 'POST', headers: {'Content-Type':'application/json'}});
+                const j = await r.json();
+                update(j.status || {});
+            } catch (e) { /* ignore */ }
+        }
+
+        function update(st) {
+            if (st.connected) { 
+                led.classList.add('ok'); 
+                status.textContent = `Arduino: ${st.port} (${st.mode})`; 
+            } else { 
+                led.classList.remove('ok'); 
+                status.textContent = 'Arduino: desconectado'; 
+            }
+            sw.checked = st.mode === 'physical';
+        }
+
+        async function poll() {
+            try {
+                const r = await fetch('/api/device/status');
+                const j = await r.json();
+                update(j.status || {});
+            } catch (e) {}
+            setTimeout(poll, 2000);
+        }
+
+        sw.addEventListener('change', async () => {
+            const mode = sw.checked ? 'physical' : 'web';
+            await fetch('/api/device/mode', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ mode })
+            });
+        });
+
+        await connect();
+        poll();
+    })();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Docente - Math Spin</title>
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1><i class="fas fa-graduation-cap"></i> Math Spin - Docente</h1>
+                <div class="curso-selector">
+                    <select id="cursoSelect">
+                        <option value="">Seleccionar curso...</option>
+                    </select>
+                    <button id="crearCursoBtn" class="btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Curso
+                    </button>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span id="nombreDocente">Cargando...</span>
+                    <button id="logoutBtn" class="btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i> Salir
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tab-navigation">
+            <button class="tab-btn active" data-tab="analytics">
+                <i class="fas fa-chart-bar"></i> Analytics
+            </button>
+            <button class="tab-btn" data-tab="estudiantes">
+                <i class="fas fa-users"></i> Estudiantes
+            </button>
+            <button class="tab-btn" data-tab="preguntas">
+                <i class="fas fa-question-circle"></i> Preguntas
+            </button>
+            <button class="tab-btn" data-tab="cursos">
+                <i class="fas fa-book"></i> Mis Cursos
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Analytics Tab -->
+            <div id="analytics" class="tab-content active">
+                <div class="analytics-header">
+                    <h2>Analytics del Curso</h2>
+                    <div class="periodo-selector">
+                        <select id="periodoSelect">
+                            <option value="semana">Última semana</option>
+                            <option value="mes" selected>Último mes</option>
+                            <option value="trimestre">Último trimestre</option>
+                            <option value="año">Último año</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- KPIs -->
+                <div class="kpis-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 id="totalEstudiantes">0</h3>
+                            <p>Estudiantes</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 id="totalSesiones">0</h3>
+                            <p>Sesiones</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 id="promedioGeneral">0%</h3>
+                            <p>Promedio</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 id="tiempoPromedio">0min</h3>
+                            <p>Tiempo Promedio</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h3>Rendimiento por Categoría</h3>
+                        <canvas id="categoriaChart"></canvas>
+                    </div>
+                    <div class="ranking-container">
+                        <h3>Top 5 Estudiantes</h3>
+                        <div id="topEstudiantes" class="ranking-list">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Sessions -->
+                <div class="recent-sessions">
+                    <h3>Sesiones Recientes</h3>
+                    <div class="table-container">
+                        <table id="sesionesTable">
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Categoría</th>
+                                    <th>Dificultad</th>
+                                    <th>Puntuación</th>
+                                    <th>Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llena dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estudiantes Tab -->
+            <div id="estudiantes" class="tab-content">
+                <div class="estudiantes-header">
+                    <h2>Gestión de Estudiantes</h2>
+                    <button id="invitarEstudianteBtn" class="btn-primary">
+                        <i class="fas fa-user-plus"></i> Invitar Estudiante
+                    </button>
+                </div>
+
+                <div id="estudiantesGrid" class="estudiantes-grid">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Preguntas Tab -->
+            <div id="preguntas" class="tab-content">
+                <div class="preguntas-header">
+                    <h2>Banco de Preguntas</h2>
+                    <div class="preguntas-controls">
+                        <div class="filtros">
+                            <select id="categoriaFiltro">
+                                <option value="todas">Todas las categorías</option>
+                                <option value="aritmetica">Aritmética</option>
+                                <option value="algebra">Álgebra</option>
+                                <option value="geometria">Geometría</option>
+                                <option value="trigonometria">Trigonometría</option>
+                                <option value="calculo">Cálculo</option>
+                            </select>
+                            <select id="dificultadFiltro">
+                                <option value="todas">Todas las dificultades</option>
+                                <option value="facil">Fácil</option>
+                                <option value="medio">Medio</option>
+                                <option value="dificil">Difícil</option>
+                            </select>
+                            <input type="text" id="busquedaInput" placeholder="Buscar pregunta...">
+                        </div>
+                        <button id="nuevaPreguntaBtn" class="btn-primary">
+                            <i class="fas fa-plus"></i> Nueva Pregunta
+                        </button>
+                    </div>
+                </div>
+
+                <div id="preguntasGrid" class="preguntas-grid">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Cursos Tab -->
+            <div id="cursos" class="tab-content">
+                <div class="cursos-header">
+                    <h2>Mis Cursos</h2>
+                    <button id="nuevoCursoBtn" class="btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Curso
+                    </button>
+                </div>
+
+                <div id="cursosGrid" class="cursos-grid">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Modal Crear Curso -->
+    <div id="modalCrearCurso" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Crear Nuevo Curso</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="formCrearCurso">
+                <div class="form-group">
+                    <label for="nombreCurso">Nombre del Curso:</label>
+                    <input type="text" id="nombreCurso" required placeholder="ej: Matemáticas">
+                </div>
+                <div class="form-group">
+                    <label for="nivelCurso">Nivel:</label>
+                    <input type="text" id="nivelCurso" required placeholder="ej: 10">
+                </div>
+                <div class="form-group">
+                    <label for="paraleloCurso">Paralelo:</label>
+                    <input type="text" id="paraleloCurso" required placeholder="ej: A">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="cerrarModal('modalCrearCurso')">Cancelar</button>
+                    <button type="submit" class="btn-primary">Crear Curso</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Crear/Editar Pregunta -->
+    <div id="modalPregunta" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="tituloModalPregunta">Nueva Pregunta</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="formPregunta">
+                <div class="form-group">
+                    <label for="textoPregunta">Pregunta:</label>
+                    <textarea id="textoPregunta" required placeholder="Escribe tu pregunta aquí..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="categoriaPregunta">Categoría:</label>
+                        <select id="categoriaPregunta" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="aritmetica">Aritmética</option>
+                            <option value="algebra">Álgebra</option>
+                            <option value="geometria">Geometría</option>
+                            <option value="trigonometria">Trigonometría</option>
+                            <option value="calculo">Cálculo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dificultadPregunta">Dificultad:</label>
+                        <select id="dificultadPregunta" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="facil">Fácil</option>
+                            <option value="medio">Medio</option>
+                            <option value="dificil">Difícil</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="opciones-container">
+                    <label>Opciones de respuesta:</label>
+                    <div class="opcion-group">
+                        <input type="radio" name="respuestaCorrecta" value="0" id="correcta0">
+                        <input type="text" id="opcion0" placeholder="Opción A" required>
+                        <label for="correcta0" class="radio-label">Correcta</label>
+                    </div>
+                    <div class="opcion-group">
+                        <input type="radio" name="respuestaCorrecta" value="1" id="correcta1">
+                        <input type="text" id="opcion1" placeholder="Opción B" required>
+                        <label for="correcta1" class="radio-label">Correcta</label>
+                    </div>
+                    <div class="opcion-group">
+                        <input type="radio" name="respuestaCorrecta" value="2" id="correcta2">
+                        <input type="text" id="opcion2" placeholder="Opción C" required>
+                        <label for="correcta2" class="radio-label">Correcta</label>
+                    </div>
+                    <div class="opcion-group">
+                        <input type="radio" name="respuestaCorrecta" value="3" id="correcta3">
+                        <input type="text" id="opcion3" placeholder="Opción D" required>
+                        <label for="correcta3" class="radio-label">Correcta</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="explicacionPregunta">Explicación (opcional):</label>
+                    <textarea id="explicacionPregunta" placeholder="Explica por qué esta es la respuesta correcta..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="cerrarModal('modalPregunta')">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Pregunta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Invitar Estudiante -->
+    <div id="modalInvitar" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Invitar Estudiantes</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Comparte este código con tus estudiantes para que se unan al curso:</p>
+                <div class="codigo-container">
+                    <input type="text" id="codigoCurso" readonly>
+                    <button id="copiarCodigoBtn" class="btn-primary">
+                        <i class="fas fa-copy"></i> Copiar
+                    </button>
+                </div>
+                <p class="codigo-info">Los estudiantes pueden usar este código en su panel para unirse al curso.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+    </div>
+
+    <script src="dashboard-script.js"></script>
+</body>
+</html>
